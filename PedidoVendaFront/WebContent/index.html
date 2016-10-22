@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+<head>
+<meta charset="ISO-8859-1">
+<title>INICIO</title>
+<script src="js/angular.min.js"></script>
+</head>
+<body ng-controller="pedidoController">
+
+<table cellpadding="2" cellspacing="2" border ="1">
+	<th>Id</th>
+	<th>nome</th>
+	<th>preco</th>
+	<th>quantidade</th>
+	
+	<tr ng-repeat="pedidos in listPedidos">
+		<td>{{pedidos.id}}</td>
+		<td>{{pedidos.nome}}</td>
+		<td>{{pedidos.preco}}</td>
+		<td>{{pedidos.quantidade}}</td>
+	</tr>
+
+</table>
+
+<script>
+
+var myapp = angular.module('myapp', []);
+
+myapp.controller('pedidoController', function($scope){
+	
+	$scope.listPedidos = [
+	            {id:'p01', nome :'Pedido01', preco:1200, quantidade: 43},
+	            {id:'p02', nome :'Pedido02', preco:250, quantidade: 41},
+	            {id:'p03', nome :'Pedido03', preco:1230, quantidade: 22},
+	            {id:'p03', nome :'Pedido04', preco:10.50, quantidade: 13},
+	            {id:'p04', nome :'Pedido05', preco:1320, quantidade: 167},
+	            ];
+	
+	});
+}
+
+</script>
+
+</body>
+</html>	
