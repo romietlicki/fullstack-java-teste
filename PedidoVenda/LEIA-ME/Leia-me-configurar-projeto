@@ -8,6 +8,8 @@ Para configuração do projeto são necessarios os seguintes itens.
 
 - maven.
 
+- recomendavel testar no Google Chrome.
+
 Passo 1:
 Importar o projeto como um projeto maven -> atualizar o projeto maven com alt+f5 e esperar o download dos jar's.
 
