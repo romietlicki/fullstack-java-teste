@@ -13,7 +13,15 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
+/**
+ * @author Rodrigo
+ * 
+ * Item pedido bean
+ *
+ */
 @Entity
 @Table(name = "item_pedido")
 public class ItemPedido implements Serializable {
@@ -25,6 +33,24 @@ public class ItemPedido implements Serializable {
 	private Double valorUnitario;
 	private Produto produto;
 	private Pedido pedido;
+
+	@JsonCreator
+	public ItemPedido(@JsonProperty("id") Long id,
+			@JsonProperty("quantidade") Integer quantidade,
+			@JsonProperty("valorUnitario") Double valorUnitario,
+			@JsonProperty("produto") Produto produto,
+			@JsonProperty("pedido") Pedido pedido) {
+		super();
+		this.id = id;
+		this.quantidade = quantidade;
+		this.valorUnitario = valorUnitario;
+		this.produto = produto;
+		this.pedido = pedido;
+	}
+
+	public ItemPedido() {
+		super();
+	}
 
 	@Id
 	@GeneratedValue
@@ -54,7 +80,7 @@ public class ItemPedido implements Serializable {
 		this.valorUnitario = valorUnitario;
 	}
 
-	@ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "produto_id", nullable = false)
 	public Produto getProduto() {
 		return produto;
@@ -74,6 +100,5 @@ public class ItemPedido implements Serializable {
 	public void setPedido(Pedido pedido) {
 		this.pedido = pedido;
 	}
-	
 
 }

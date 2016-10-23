@@ -14,6 +14,12 @@ import br.com.mietlicki.model.Produto;
 import br.com.mietlicki.service.NegocioException;
 import br.com.mietlicki.util.jpa.EntityManagerProducer;
 
+/**
+ * @author Rodrigo
+ * 
+ *         Classe Dao responsável pela inserção/listagem/remoção dos produtos.
+ *
+ */
 public class Produtos implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -22,42 +28,42 @@ public class Produtos implements Serializable {
 	private EntityManager manager;
 
 	public Produto guardar(Produto produto) {
-		try{
-		EntityManagerProducer emp = new EntityManagerProducer();
-		
-		manager = emp.createEntityManager();
-		
-		manager.getTransaction().begin();
-		return manager.merge(produto);
-		
-		} catch(Exception e){
-			System.out.println("Erro..." +e);
-		}finally{
+		try {
+			EntityManagerProducer emp = new EntityManagerProducer();
+
+			manager = emp.createEntityManager();
+
+			manager.getTransaction().begin();
+			return manager.merge(produto);
+
+		} catch (Exception e) {
+			System.out.println("Erro..." + e);
+		} finally {
 			manager.getTransaction().commit();
 		}
 		return null;
 	}
-	
-	  public List<Produto> findAllProdutos() {
-	        List<Produto> produtos = null;
-	        try {
-	        	EntityManagerProducer emp = new EntityManagerProducer();
-	    		
-	    		manager = emp.createEntityManager();
-	    		
-	    		manager.getTransaction().begin();
-	            Query query = manager.createQuery("from Produto");
-	            produtos = query.getResultList();
-	            System.out.println("Exibindo todos os produtos... " +produtos);
-	            
-	        } catch (HibernateException e) {
-	            System.out.println(e);
-	        } finally {
-	            manager.close();
-	        }
-	        return produtos;
-	    }
-	
+
+	public List<Produto> findAllProdutos() {
+		List<Produto> produtos = null;
+		try {
+			EntityManagerProducer emp = new EntityManagerProducer();
+
+			manager = emp.createEntityManager();
+
+			manager.getTransaction().begin();
+			Query query = manager.createQuery("from Produto");
+			produtos = query.getResultList();
+			System.out.println("Exibindo todos os produtos... " + produtos);
+
+		} catch (HibernateException e) {
+			System.out.println(e);
+		} finally {
+			manager.close();
+		}
+		return produtos;
+	}
+
 	public void remover(Produto produto) {
 		try {
 			produto = porId(produto.getId());
@@ -73,8 +79,10 @@ public class Produtos implements Serializable {
 	}
 
 	public List<Produto> porNome(String nome) {
-		return this.manager.createQuery("from Produto where upper(nome) like :nome", Produto.class)
+		return this.manager
+				.createQuery("from Produto where upper(nome) like :nome",
+						Produto.class)
 				.setParameter("nome", nome.toUpperCase() + "%").getResultList();
 	}
-	
+
 }

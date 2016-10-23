@@ -1,7 +1,6 @@
 package br.com.mietlicki.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,10 +14,14 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.NotBlank;
 
-import br.com.mietlicki.service.NegocioException;
-
+/**
+ * @author Rodrigo
+ *
+ *         Produto bean
+ *
+ */
 @Entity
-@Table(name="produto")
+@Table(name = "produto")
 public class Produto implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,6 +30,19 @@ public class Produto implements Serializable {
 	private String nome;
 	private Double valorUnitario;
 	private Integer quantidadeEstoque;
+
+	public Produto() {
+		super();
+	}
+
+	public Produto(Long id, String nome, Double valorUnitario,
+			Integer quantidadeEstoque) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.valorUnitario = valorUnitario;
+		this.quantidadeEstoque = quantidadeEstoque;
+	}
 
 	@Id
 	@GeneratedValue
@@ -50,7 +66,7 @@ public class Produto implements Serializable {
 	}
 
 	@NotNull(message = "é obrigatório")
-	@Column(name="valor_unitario", nullable = false)
+	@Column(name = "valor_unitario", nullable = false)
 	public Double getValorUnitario() {
 		return valorUnitario;
 	}
@@ -59,8 +75,10 @@ public class Produto implements Serializable {
 		this.valorUnitario = valorUnitario;
 	}
 
-	@NotNull @Min(0) @Max(value = 9999, message = "tem um valor muito alto")
-	@Column(name="quantidade_estoque", nullable = false, length = 5)
+	@NotNull
+	@Min(0)
+	@Max(value = 9999, message = "tem um valor muito alto")
+	@Column(name = "quantidade_estoque", nullable = false, length = 5)
 	public Integer getQuantidadeEstoque() {
 		return quantidadeEstoque;
 	}

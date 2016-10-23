@@ -1,8 +1,6 @@
 package br.com.mietlicki.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,22 +15,41 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import org.codehaus.jackson.annotate.JsonCreator;
 import org.codehaus.jackson.annotate.JsonManagedReference;
+import org.codehaus.jackson.annotate.JsonProperty;
 
+/**
+ * @author Rodrigo
+ * 
+ * Pedido bean
+ *
+ */
 @Entity
 @Table(name = "pedido")
-public class Pedido implements Serializable {
+public class Pedido {
 
 	private static final long serialVersionUID = 1L;
 
 	private Long id;
-	private Date dataCriacao;
+	private String dataCriacao;
 	private Double valorTotal;
 	private Cliente cliente;
 	private List<ItemPedido> itens = new ArrayList<>();
 	
 	public Pedido() {
 		super();
+	}
+	
+	@JsonCreator
+	public Pedido(@JsonProperty("id") Long id,@JsonProperty("dataCriacao") String dataCriacao,@JsonProperty("valorTotal") Double valorTotal,
+			@JsonProperty("cliente") Cliente cliente, @JsonProperty("itens") List<ItemPedido> itens) {
+		super();
+		this.id = id;
+		this.dataCriacao = dataCriacao;
+		this.valorTotal = valorTotal;
+		this.cliente = cliente;
+		this.itens = itens;
 	}
 
 	@Id
@@ -47,16 +64,15 @@ public class Pedido implements Serializable {
 
 	@NotNull
 	@Column(name = "data_criacao", nullable = false)
-	public Date getDataCriacao() {
+	public String getDataCriacao() {
 		return dataCriacao;
 	}
 
-	public void setDataCriacao(Date dataCriacao) {
+	public void setDataCriacao(String dataCriacao) {
 		this.dataCriacao = dataCriacao;
 	}
 
-	@NotNull
-	@Column(name = "valor_total", nullable = false, precision = 10, scale = 2)
+	@Column(name = "valor_total", nullable = false)
 	public Double getValorTotal() {
 		return valorTotal;
 	}
@@ -75,6 +91,7 @@ public class Pedido implements Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
+	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
 	public List<ItemPedido> getItens() {

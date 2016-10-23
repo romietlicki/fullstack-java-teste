@@ -11,12 +11,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
 
+/**
+ * @author Rodrigo
+ *
+ *Cliente bean
+ *
+ */
 @Entity
-@Table
-@JsonDeserialize()
-public class Cliente implements Serializable {
+@Table(name = "cliente")
+public class Cliente {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,9 +31,23 @@ public class Cliente implements Serializable {
 	private String email;
 	private String cpf_cnpj;
 	private TipoPessoa tipo;
-	
+
 	public Cliente() {
 		super();
+	}
+
+	@JsonCreator
+	public Cliente(@JsonProperty("id") Long id,
+			@JsonProperty("nome") String nome,
+			@JsonProperty("email") String email,
+			@JsonProperty("cpf_cnpj") String cpf_cnpj,
+			@JsonProperty("tipo") TipoPessoa tipo) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.cpf_cnpj = cpf_cnpj;
+		this.tipo = tipo;
 	}
 
 	@Id
@@ -57,7 +77,7 @@ public class Cliente implements Serializable {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	@Column(nullable = false, length = 20)
 	public String getCpf_cnpj() {
 		return cpf_cnpj;

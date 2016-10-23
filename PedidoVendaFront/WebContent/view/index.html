@@ -3,290 +3,325 @@
 <head>
 <meta charset="ISO-8859-1">
 <title>INICIO</title>
-<!-- <script type="text/javascript" src="/js/angular.min.js"></script> -->
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.8/angular.min.js"></script>
 
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </head>
-<body ng-controller="pedidoController">
-<br>
-<input type="button" value="Buscar clientes" class="btn btn default" ng-click="buscarClientes()">
+<body ng-controller="pedidoController"
+	style="margin-left: 35px; margin-right: 20px; margin-bottom: 45px; margin-top:20px">
+	<br>
+	<input type="button" value="Buscar clientes" class="btn btn default"
+		ng-click="buscarClientes()">
 
-<input data-toggle="modal" data-target="#modalAdicionarProdutos" type="button" value="Adicionar novos produtos" class="btn btn default">
+	<input data-toggle="modal" data-target="#modalClientesADD"
+		type="button" value="Adicionar novos clientes" class="btn btn default">
 
-<input data-toggle="modal" data-target="#modalClientesADD" type="button" value="Adicionar novos clientes" class="btn btn default" >
+	<input data-toggle="modal" data-target="#modalAdicionarProdutos"
+		type="button" value="Adicionar novos produtos" class="btn btn default">
 
+	<input data-toggle="modal" data-target="#modalProdutos" type="button"
+		value="Ver produtos disponiveis" class="btn btn default"
+		ng-click="buscarProdutos()">
 
-<!-- Modal -->
-<div id="modalClientesADD" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+	<!-- Modal mostrar itens pedido -->
+	<div id="modalItensPedidos" class="modal fade" role="dialog">
+		<div class="modal-dialog modal-lg">
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Adicionar Clientes</h4>
-      </div>
-      <div class="modal-body">
-<table cellpadding="2" cellspacing="2" class="table table-striped">
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Itens</h4>
+				</div>
+				<div class="modal-body">
+					<table cellpadding="2" cellspacing="2" class="table">
 
-<tr>
-<td>Nome</td>
-<td><input type="text" ng-model="nome"></td>
-</tr>
+						<tr>
+							<th>Itens</th>
+						</tr>
+						<tr>
+							<th>Id</th>
+							<th>Nome</th>
+							<th>Quantidade</th>
+							<th>Valor Unitario</th>
+						</tr>
+						<tr ng-repeat="itens in listItens track by $index">
+							<td>{{itens.id}}</td>
+							<td>{{itens.produto.nome}}</td>
+							<td>{{itens.produto.quantidadeEstoque}}</td>
+							<td>{{itens.valorUnitario}}</td>
+							<td><input type="button" value="Excluir"
+								ng-click="delItem(itens.id)" class="btn btn-danger"></td>
+						</tr>
 
-<tr>
-<td>E-mail</td>
-<td><input type="text" ng-model="email"></td>
-</tr>
+						<tr>
+							<td><input data-toggle="modal" data-target="#modalProdutos"
+								type="button" value="Buscar produtos" class="btn btn default"
+								ng-click="buscarProdutos()"></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						ng-click="selectEdit(pedidos.id,'p')">Adicionar aos
+						Pedidos</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
 
-<tr>
-<td>Cpf/Cnpj</td>
-<td><input type="text" ng-model="cpf_cnpj"></td>
-</tr>
-<tr>
+		</div>
+	</div>
 
-<tr>
-<td>Tipo</td>
-<td><select ng-model="tipo" style="width:175px">
-<option name="FISICA">FISICA</option>
-<option name="JURIDICA">JURIDICA</option>
-</select></td>
-</tr>
-<tr>
+	<!-- Modal -->
+	<div id="modalClientesADD" class="modal fade" role="dialog">
+		<div class="modal-dialog">
 
-<td>&nbsp;</td>
-<td>
-<br>
-<input type="button" value="Adicionar Novo cliente" ng-click="addCliente()" class="btn btn default">
-</td>
-</tr>
-</table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Adicionar Clientes</h4>
+				</div>
+				<div class="modal-body">
+					<table cellpadding="2" cellspacing="2" class="table table-striped">
 
-  </div>
-</div>
+						<tr>
+							<td>Nome</td>
+							<td><input type="text" ng-model="nome"></td>
+						</tr>
 
+						<tr>
+							<td>E-mail</td>
+							<td><input type="text" ng-model="email"></td>
+						</tr>
 
-<!-- Modal mostrar produtos -->
-<div id="modalProdutos" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+						<tr>
+							<td>Cpf/Cnpj</td>
+							<td><input type="text" ng-model="cpf_cnpj"></td>
+						</tr>
+						<tr>
+						<tr>
+							<td>Tipo</td>
+							<td><select ng-model="tipo" style="width: 175px">
+									<option name="FISICA">FISICA</option>
+									<option name="JURIDICA">JURIDICA</option>
+							</select></td>
+						</tr>
+						<tr>
 
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Produtos</h4>
-      </div>
-      <div class="modal-body">
-         <table cellpadding="2" cellspacing="2" border = "1" class="table table-striped">
-        	<th>Id</th>
-			<th>nome</th>
-			<th>Valor</th>
-			<th>Quantidade</th>
-			<th>Selecionar produto</th>
-        
-        	<tr ng-repeat="produto in listProdutos track by $index">
-		<td>{{produto.id}}</td>
-		<td>{{produto.nome}} </td>
-		<td>{{produto.valorUnitario}} </td>
-		<td>{{produto.quantidadeEstoque}}</td>
-		<td><input type="checkbox" data-checklist-model="produto.id" data-checklist-value="item" ng-click="selectEdit(produto.id, 'i')" ng-checked="produto.id.checked"></td>
-		
-		
-		
-	</tr>
-        </table> 
-        
-        
-<!--         <div >
-        <select ng-model="data.singleSelect">
-<option ng-repeat="produto in listProdutos track by $index" ng-selected="selectEdit(produto.id)">ID:{{produto.id}} Nome: {{produto.nome}} Valor: {{produto.valorUnitario}} Quantidade: {{produto.quantidadeEstoque}}</option>
+							<td>&nbsp;</td>
+							<td><br> <input type="button"
+								value="Adicionar Novo cliente" ng-click="addCliente()"
+								class="btn btn default"></td>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
 
-</select>
-       </div>  -->
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="selectEdit(pedidos.id,'p')">Adicionar aos Pedidos</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-
-  </div>
-</div>
-
-
-<div id="modalAdicionarProdutos" class="modal fade" role="dialog">
-  <div class="modal-dialog">
-
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Produtos</h4>
-      </div>
-      <div class="modal-body">
-
-        <h3>Adicionar produto</h3>
-        <br>
-        <table cellpadding="2" cellspacing="2" class="table table-striped">
-        <tr>
-        <td>Nome do produto:</td><td><input type="text" name="nome" ng-model="nome"></td>
-        </tr>
-        <tr>
-        <td>Valor:</td><td><input type="text" name="valorUnitario" ng-model="valorUnitario"></td>
-        </tr>
-        <tr>
-        <td>Quantidade:</td><td><input type="text" name="quantidadeProduto" ng-model="quantidadeProduto"></td>
-        </tr>
-        </table>
-        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="addProduto()">Adic	 produto</button>
-        <button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
-      </div>
-    </div>
-
-  </div>
-</div>
+		</div>
+	</div>
 
 
-<!-- Tabela para listar clientes -->
-<h3>Clientes</h3>
-<table cellpadding="2" cellspacing="2" border = "1" class="table table-striped">
-	<th>Id</th>
-	<th>nome</th>
-	<th>E-mail</th>
-	<th>Cpf</th>
-	<th>tipo</th>
-	
-	<tr ng-repeat="cliente in listClientes track by $index">
-		<td>{{cliente.id}}</td>
-		<td>{{cliente.nome}}</td>
-		<td>{{cliente.email}}</td>
-		<td>{{cliente.cpf_cnpj}}</td>
-		<td>{{cliente.tipo}}</td>
-		<td><a href="#" ng-click="selectListarPedidoCliente(cliente.id)">Selecionar</a>
-		</td>
-	</tr>
+	<!-- Modal mostrar produtos -->
+	<div id="modalProdutos" class="modal fade" role="dialog">
+		<div class="modal-dialog">
 
-</table>
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Produtos</h4>
+				</div>
+				<div class="modal-body">
+					<table cellpadding="2" cellspacing="2" border="1"
+						class="table table-striped">
+						<th>Id</th>
+						<th>nome</th>
+						<th>Valor</th>
+						<th>Quantidade</th>
+						<th>Selecionar produto</th>
+
+						<tr ng-repeat="produto in listProdutos track by $index">
+							<td>{{produto.id}}</td>
+							<td>{{produto.nome}}</td>
+							<td>{{produto.valorUnitario}}</td>
+							<td>{{produto.quantidadeEstoque}}</td>
+							<td><input type="checkbox" data-checklist-model="produto.id"
+								data-checklist-value="item"
+								ng-click="selectEdit(produto.id, 'i')"
+								ng-checked="produto.id.checked"></td>
+
+						</tr>
+					</table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						ng-click="selectEdit(pedidos.id,'p')">Adicionar aos
+						Pedidos</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div id="modalAdicionarProdutos" class="modal fade" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+					<h4 class="modal-title">Adicionar produto</h4>
+				</div>
+				<div class="modal-body">
+
+					<h3>Adicionar produto</h3>
+					<br>
+					<table cellpadding="2" cellspacing="2" class="table table-striped">
+						<tr>
+							<td>Nome do produto:</td>
+							<td><input type="text" name="nome" ng-model="nome"></td>
+						</tr>
+						<tr>
+							<td>Valor:</td>
+							<td><input type="text" name="valorUnitario"
+								ng-model="valorUnitario"></td>
+						</tr>
+						<tr>
+							<td>Quantidade:</td>
+							<td><input type="number" name="quantidadeProduto"
+								ng-model="quantidadeProduto"></td>
+						</tr>
+					</table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal"
+						ng-click="addProduto()">Adicionar produto</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Fechar</button>
+				</div>
+			</div>
+
+		</div>
+	</div>
 
 
-<h3>Pedidos</h3>
-<table cellpadding="2" cellspacing="2" border = "1" class="table table-striped">
-	<th>Numero do pedido</th>
-	<th>Data de emissao</th>
-	<th>Valor total</th>
-	<th>Cliente</th>
-
-	<tr ng-repeat="pedido in listPedidos track by $index">
-	
-		<td>{{pedido.id}}</td>
-		<td>{{pedido.dataCriacao}}</td>
-		<td>{{pedido.valorTotal}}</td>
-		<td>{{pedido.cliente.nome}}</td>
-		<td>
-		<input type="button" value="Excluir" ng-click="del(pedido.id)" class="btn btn-danger">
-		<input type="button" value="Editar"  ng-click="buscarItens(pedido.id); selectEdit(pedido.id) " class="btn btn default">	
-		</td>
-		
-	</tr>
-
-</table>
-<h3>Editar/Adicionar pedidos</h3>
-<table style="margin-left:10px;margin-bottom:20px " cellpadding="2" cellspacing="2" class="table table-striped" >
-<tr>
-<td>Numero do pedido</td>
-<td><input type="text" ng-model="id" readonly></td>
-</tr>
-
-<tr>
-<td>Data:</td>
-<td><input style="width:280px" ng-model="dataCriacao"{{pedido.dataCriacao}} type="text"> Alterar data: <input  ng-model="dataCriacao"{{pedido.dataCriacao}} type="date"></td>
-</tr>
-
-<tr>
-<td>Cliente:</td>
-<td><input style="width:280px" ng-model="cliente" {{pedido.cliente.nome}} type="text"></td>
-</tr>
-
-<tr>
-<td><input style="width:280px" ng-model="idCliente" {{pedido.cliente.id}} visibility="hide" type="text"></td>
-</tr>
-
-<tr>
-<td>Valor total</td>
-<td><input type="text" ng-model="valorTotal" {{pedido.valorTotal}}></td>
-
- <table cellpadding="2" cellspacing="2"  class="table table-striped">
-
-<tr>
-<th>Itens</th>
-</tr>
-		<tr>
+	<!-- Tabela para listar clientes -->
+	<h3>Clientes</h3>
+	<table cellpadding="2" cellspacing="2" border="1"
+		class="table table-striped">
 		<th>Id</th>
-		<th>Nome</th>
-		<th>Quantidade</th>
-		<th>Valor Unitario</th>
+		<th>nome</th>
+		<th>E-mail</th>
+		<th>Cpf</th>
+		<th>tipo</th>
+
+		<tr ng-repeat="cliente in listClientes track by $index">
+			<td>{{cliente.id}}</td>
+			<td>{{cliente.nome}}</td>
+			<td>{{cliente.email}}</td>
+			<td>{{cliente.cpf_cnpj}}</td>
+			<td>{{cliente.tipo}}</td>
+			<td><a href="#">Selecionar</a></td>
 		</tr>
-		<tr ng-repeat ="itens in listItens track by $index">
-		<td>{{itens.id}}</td>
-		<td>{{itens.produto.nome}}</td>
-		<td>{{itens.produto.quantidadeEstoque}}</td>
-		<td>{{itens.valorUnitario}}</td>
-		<td><input type="button" value="Excluir" ng-click="delItem(itens.id)" class="btn btn-danger"></td>
-</tr> 
+
+	</table>
 
 
+	<h3>Pedidos</h3>
+	<table cellpadding="2" cellspacing="2" border="1"
+		class="table table-striped">
+		<th>Numero do pedido</th>
+		<th>Data de emissao</th>
+		<th>Valor total</th>
+		<th>Cliente</th>
 
-<tr>
-<td>&nbsp;</td>
-<td>
-<br>
-<input type="button" value="Incluir pedido" ng-click="addPedidos()" class="btn btn default">
-<input type="button" value="Salvar edição" ng-click="addPedidos()" class="btn btn default">
-<input data-toggle="modal" data-target="#modalProdutos" type="button" value="Buscar produtos" class="btn btn default" ng-click="buscarProdutos()">
-</td>
-</tr>
-</table>
+		<tr>
 
+		<tr ng-repeat="pedido in listPedidos track by $index">
 
-</table>
+			<td>{{pedido.id}}</td>
+			<td>{{pedido.dataCriacao}}</td>
+			<td>{{pedido.valorTotal}}</td>
+			<td>{{pedido.cliente}}</td>
+			<td><input type="button" value="Excluir"
+				ng-click="del(pedido.id)" class="btn btn-danger"> <input
+				type="button" value="Editar"
+				ng-click="buscarItens(pedido.id); selectEdit(pedido.id) "
+				class="btn btn default"></td>
 
-<script>
+		</tr>
 
+	</table>
+
+	<h3>Editar/Adicionar pedidos</h3>
+	<table style="margin-left: 10px; margin-bottom: 20px" cellpadding="2"
+		cellspacing="2" class="table table-striped">
+
+		<tr>
+			<td>Numero do pedido</td>
+			<td><input type="text" ng-model="id"></td>
+		</tr>
+
+		<tr>
+			<td>Data:</td>
+			<td><input ng-model="dataCriacao"
+				{{pedido.dataCriacao}} type="text"> Aterar data :<input
+				ng-model="dataCriacao" {{pedido.dataCriacao}} type="date"></td>
+		</tr>
+
+		<tr>
+			<td>Cliente:</td>
+			<td><input style="width: 280px" ng-model="cliente"
+				{{cliente.nome}} type="text"></td>
+		</tr>
+
+		<tr>
+			<td>Valor total</td>
+			<td><input type="text" ng-model="valorTotal"{{pedido.valorTotal}}></td>
+		</tr>
+
+	</table>
+
+	<table>
+		<tr>
+			<td><input type="submit" value="Inserir Pedido"
+				class="btn btn default" ng-click="addPedidos()"></td>
+			<td><input data-toggle="modal" data-target="#modalItensPedidos"
+				type="button" value="Ver itens do pedido" class="btn btn default"></td>
+			<td><input type="submit" value="Editar Pedido"
+				class="btn btn default" ng-click="editar()"></td>
+		</tr>
+	</table>
+	
+	<!-- aqui é feito o meu controller do angular -->
+	<script>
 var myapp = angular.module('myapp', []);
 
 myapp.controller('pedidoController', function($scope, $http){
 	
-	$scope.listPedidos = [];
+	$scope.listPedidos = [
+	                      {id:'1054', dataCriacao:'22/10/2016', valorTotal:'228.90', cliente:'Rodrigo Mietlicki'},
+	                      {id:'1055', dataCriacao:'20/10/2016', valorTotal:'1451.00', cliente:'Jose da Silva'},
+	                      {id:'1056', dataCriacao:'21/09/2016', valorTotal:'520.50', cliente:'Joana Rodrigues'},
+	                 ];
 	
 	$scope.listProdutos = [];
-	
 	$scope.listItens = [];
-	
 	$scope.listaSelecionados = [];
-	
-	
-	//converter data
-	function ConverterDataJsonParaData(jsonDate) {
-		
-	    var dataFormatada = new Date(jsonDate);
-	
-	    return ((dataFormatada.getDate() < 10) ? "0" : "") + dataFormatada.getDate() + "/" + (((dataFormatada.getMonth() + 1) < 10) ? "0" : "") + (dataFormatada.getMonth() + 1) + "/" + dataFormatada.getFullYear();
-	
-	}
 	
 	$scope.addProduto = function(){
 		
@@ -302,16 +337,13 @@ myapp.controller('pedidoController', function($scope, $http){
 		
 		$scope.id = '';
 		$scope.nome = '';
-		$scope.email = '';
-		$scope.cpf_cnpj = '';
-		$scope.tipo = '';
+		$scope.valorUnitario = '';
+		$scope.quantidadeProduto = '';
 		
 	};
 	
-	
 	$scope.buscarItens = function(id){
 		
-	
 		 $http({
 		        method : "GET",
 		        url : "http://localhost:8080/PedidoVenda/pedidos/listarItens/" +id
@@ -323,8 +355,6 @@ myapp.controller('pedidoController', function($scope, $http){
 		    });
 	}
 	
-	
-	
 	$scope.addItens = function(id){
 		
 		console.log($scope.item[0]);
@@ -332,46 +362,38 @@ myapp.controller('pedidoController', function($scope, $http){
 		  $scope.produto = {
 				  listItens: [$scope.item[0]]
 				  };
-		
-/* 		var index = getSelectedIndex(id);
-		var pedido = $scope.listPedidos[index];
-		angular.forEach(listItens, function(item){
-			if (item.checked)
-			{
-		  		$scope.itens[item.id] = item.checked;
-		  		$scope.id = pedido.id;
-			} else{
-				console.log("erro");
-			}
-		});
-		 */
-
-		
 	};
-	
 	
 	$scope.addPedidos = function(){
 		
-	/* 	$scope.listPedidos.push({
-			id:$scope.id, dataCriacao :$scope.dataCriacao, valorTotal: $scope.valorTotal
+		$scope.listPedidos.push({
+			
+			id: $scope.id, dataCriacao:$scope.dataCriacao, valorTotal:$scope.valorTotal, cliente:$scope.cliente
 		});
-		 */
+		
+		$scope.id = '';
+		$scope.dataCriacao = '';
+		$scope.valorTotal = '';
+
+		
+		//codigo para pegar os dados do pedido e chamar o servico de inclusão/alteracao de pedido infelizmente dando erro e não consegui arrumar a tempo :(
+		
+	   /*          var data = $.param({
+	            	dataCriacao: $scope.dataCriacao,
+	            	valorTotal: $scope.valorTotal,
+	            	dataCriacao: $scope.dataCriacao,
+	            	cliente: $scope.idCliente,
+	            });
 		 
 		 console.log({'dataCriacao': $scope.dataCriacao, 'valorTotal':$scope.valorTotal,'cliente':$scope.idCliente});
 		 
-		 $http.post("http://localhost:8080/PedidoVenda/pedidos/inserirPedido", {'dataCriacao': $scope.dataCriacao, 'valorTotal':$scope.valorTotal,'cliente':$scope.idCliente})
+		 $http.put("http://localhost:8080/PedidoVenda/pedidos/alterarPedido", +data)
          .success(function (data, status, headers, config) {
         	 alert('Pedido cadastrado!')
          })
          .error(function (data, status, header, config) {
         	 alert('Erro ao cadastrar!')
-         });
-		 
-		 
-		$scope.id = '';
-		$scope.dataCriacao = '';
-		$scope.valorTotal = '';
-		
+         }); */
 	};
 	
 	$scope.editar = function(){
@@ -379,69 +401,27 @@ myapp.controller('pedidoController', function($scope, $http){
 		$scope.listPedidos[index].id = $scope.id;
 		$scope.listPedidos[index].dataCriacao = $scope.dataCriacao;
 		$scope.listPedidos[index].valorTotal = $scope.valorTotal;
+		$scope.listPedidos[index].valorTotal = $scope.valorTotal;
+		$scope.listPedidos[index].cliente = $scope.cliente;
 
 	};
-	
 	
 	$scope.selectEdit = function(id, p){
 		
 		var index = getSelectedIndex(id);
-		var indexItem = getSelectedIndexItem(id);
 		var pedido = $scope.listPedidos[index];
-		var iten = $scope.listPedidos[0].itens[0];
-		
-		var data1 = ConverterDataJsonParaData(pedido.dataCriacao)
 		
 		$scope.id = pedido.id;
-		$scope.dataCriacao =data1;
+		$scope.dataCriacao =pedido.dataCriacao;
 		$scope.valorTotal = pedido.valorTotal;
-		$scope.cliente = pedido.cliente.nome;
-		$scope.idCliente = pedido.cliente.id;
+		$scope.cliente = pedido.cliente;
 		
-		
-		var produtoSelecionado = $scope.listProdutos[indexItem];
-		iten.id = $scope.listProdutos[indexItem].id.checked;
-		
-// 		iten.produto = produtoSelecionado;
-		iten.produto.id = produtoSelecionado.id;
-		iten.produto.nome = produtoSelecionado.nome;
-		iten.produto.quantidadeEstoque = produtoSelecionado.quantidadeEstoque;
-		iten.produto.valorUniatario = produtoSelecionado.valorUniatario;
-		
-		$scope.listaSelecionados[$scope.listaSelecionados.length] = iten;
 		
 		if(p=='p'){
 			var itens = $scope.listItens[$scope.listaSelecionados] = iten;	
 		} 
 		
-		
-// 		var itens = $scope.listItens[0];	 
-// 		itens.produto = produtoSelecionado;
-// 		$scope.listItens[index] = itens;
-		//var itens = $scope.listItens[indexItem];
-		
-			
-	/* 	$sope.listItens[index].id = $scope.id;
-		
-		$sope.listItens[index].quantidade = $scope.quantidade;
-		$sope.listItens[index].valorUnitario = $scope.valorUnitario;
-		$sope.listItens[index].pedido.id = $scope.pedido.id; */
-		
-
-		
-		console.log(pedido.id, data1, pedido.valorTotal, pedido.cliente.nome)
 	}
-	
-// $scope.selectItens = function(id){
-		
-// // 		var index = getSelectedIndex(id);
-// 		var indexItem = getSelectedIndexItem(id);
-// 		var produtoSelecionado = $scope.listProdutos[indexItem];
-// 		var pedido = $scope.listPedidos
-// 		$scope.listItens[$scope.listItens.length] = produtoSelecionado;
-		
-// 	}
-	
 	
 	$scope.del = function (id){
 		var result = confirm("Tem certeza?");
@@ -461,7 +441,6 @@ myapp.controller('pedidoController', function($scope, $http){
 		
 	};
 	
-	
 	function getSelectedIndex(id){
 		for(var i=0; i<$scope.listPedidos.length; i++)
 			if($scope.listPedidos[i].id == id)
@@ -479,12 +458,7 @@ myapp.controller('pedidoController', function($scope, $http){
 		return -1;	
 		}
 	
-	
-	
-	
 	<!-- Funcoes para cliente-->
-	
-	
 	$scope.listClientes = [];
  	
 	$scope.buscarClientes = function(){
@@ -500,8 +474,6 @@ myapp.controller('pedidoController', function($scope, $http){
 			    });
 				
 	} 
-	
-	
 	$scope.buscarProdutos = function(){
 		
 	    $http({
@@ -516,8 +488,6 @@ myapp.controller('pedidoController', function($scope, $http){
 	    });
 		
 } 
-	
-	
 	$scope.addCliente = function(){
 		
 		console.log({'name': $scope.nome, 'email':$scope.email,'cpf_cnpj':$scope.cpf_cnpj, 'tipo':$scope.tipo});
@@ -537,7 +507,7 @@ myapp.controller('pedidoController', function($scope, $http){
 		$scope.tipo = '';
 		
 	};
-	
+
 	$scope.selectListarPedidoCliente = function(id){
 		
 	    $http({
@@ -547,12 +517,28 @@ myapp.controller('pedidoController', function($scope, $http){
 	        
 	    }).then(function mySucces(response) {
 	        $scope.listPedidos = response.data
-	       
+	    
 	    }, function myError(response) {
 	        $scope.myWelcome = response.statusText;
+	        
 	    });
 	    
-	    
+	}
+	
+	$scope.verificarPedidos = function(id){
+		
+		var index = getSelectedIndexCliente(id);
+		var cliente = $scope.listClientes[index];
+		
+		var pedido = $scope.listPedidos[index];
+		
+		console.log(pedido, id);
+		
+		if($scope.listPedidos[listPedidos.length] == 0){
+			alert('Cliente não possui pedidos');
+			
+		}
+		
 	}
 	
 	function getSelectedIndexCliente(id){
@@ -567,4 +553,4 @@ myapp.controller('pedidoController', function($scope, $http){
 </script>
 
 </body>
-</html>	
+</html>
