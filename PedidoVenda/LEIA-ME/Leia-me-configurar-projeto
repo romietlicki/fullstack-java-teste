@@ -1,0 +1,36 @@
+Configuração do projeto.
+
+Para configuração do projeto são necessarios os seguintes itens.
+
+- tomcat 8
+
+- eclipse
+
+- maven.
+
+Passo 1:
+Importar o projeto como um projeto maven -> atualizar o projeto maven com alt+f5 e esperar o download dos jar's.
+
+Passo 2:
+na pasta src/main/java abrir a pasta META-INF e alterar o persistence.xml alterar os campos user e password
+e colocar os dados da base de dados local.
+
+criar uma base de dados chamada 'Pedidos' (como está na url), a partir deste banco de dados que o JPA com hibernate irá criar
+a base de dados e os relacionamentos automaticamente, assim não precisa rodar script.
+
+instalar o tomcat e add os dois projetos no server.
+
+rodar a aplicação através da url: http://localhost:8080/PedidoVendaFront/view/index.html e testar...
+
+Na primeira vez que for dada alguma instruçao para o banco de dados pode ser que demore um pouco mais para retornar os resultados pois o hibernate estará criando a base de dados.
+
+OBS.
+Eu não tinha experiência com Angular JS então não consegui implementar algumas funcionalidades á tempo :(
+
+ O back-end está funcionando corretamente, todas as funções.
+ 
+ o front-end a parte de tela está ok, porém não está chamando o serviço de inclução, alteração e exclusão de pedidos, está funcionando no hardcode somente :(
+ 
+ Otima semana.
+ 
+ Obrigado.
